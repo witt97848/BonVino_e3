@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="bonvino_db" uuid="29619b03-ca98-4110-8722-fbf33c5b803d">
+    <data-source source="LOCAL" name="bonvino_db" uuid="b7698d99-f020-4ab9-a9d8-9d0f719a4742">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>

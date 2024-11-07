@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Configuración de la base de datos -->
+        <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
+        <property name="hibernate.connection.url">jdbc:sqlite:E:\Estudios\UTN\2024 3K3\DSI\PPAI_BonVino_e3\BonVino_e3\BonVino\src\main\resources\META-INF\bonvino_db.db</property>
+        <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
+
+        <mapping class="org.gvredonditos.modelo.Pais"/><!--READY-->
+        <mapping class="org.gvredonditos.modelo.Bodega"/><!--READY-->
+        <mapping class="org.gvredonditos.modelo.Provincia"/><!--READY-->
+        <mapping class="org.gvredonditos.modelo.RegionVitivinicola"/><!--READY-->
+        <mapping class="org.gvredonditos.modelo.Reseña"/><!--READY-->
+        <mapping class="org.gvredonditos.modelo.TipoUva"/>
+        <mapping class="org.gvredonditos.modelo.Varietal"/>
+        <mapping class="org.gvredonditos.modelo.Vino"/>
+        <!-- Agregar otras clases aquí -->
+    </session-factory>
+</hibernate-configuration>
