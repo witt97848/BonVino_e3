@@ -22,23 +22,22 @@ public class Main {
 
 //        List<Pais> paises = paisRepo.findAll();
 //        paises.forEach(pais -> {System.out.println(pais); pais.getProvincias().forEach(System.out::println);});
-//
+
 //        List<Provincia> provincias = provinciaRepo.findAll();
 //        provincias.forEach(p -> {System.out.println(p);p.getRegiones().forEach(r -> System.out.println("  " + r));});
-//
+
 //        List<RegionVitivinicola> regiones = regionRepo.findAll();
 //        regiones.forEach(r -> System.out.println(" == " + r));
-//
+
 //        List<Bodega> bodegas = bodegaRepo.findAll();
 //        bodegas.forEach(System.out::println);
-//
-//
+
 //        List<Reseña> reseñas = reseñaRepo.findAll();
 //        reseñas.forEach(System.out::println);
-//
+
 //        List<TipoUva> tipoUvas = tipoUvaRepo.findAll();
 //        tipoUvas.forEach(System.out::println);
-////
+
 //        List<Varietal> varietales = varietalRepo.findAll();
 //        varietales.forEach(System.out::println);
 
