@@ -199,7 +199,55 @@ public class PantallaGenerarReporteDeRankingDeVinos {
 
     // TODO Implementar
     public void solicitarTipoDeReseña(){
-        // solicitar tipo de reseña
+        // Labels ______________________________________________________________
+        labelTipoDeReseña = new JLabel("Seleccione tipo de reseña:");
+        labelTipoDeReseña.setBounds(250, 150, 160, 20);
+        labelTipoDeReseña.setForeground(Color.WHITE);
+
+        // ComboBox ____________________________________________________________
+        comboBoxTipoDeReseña = new JComboBox();
+        comboBoxTipoDeReseña.addItem("Sommelier");
+        comboBoxTipoDeReseña.addItem("Regular");
+        comboBoxTipoDeReseña.setBounds(250, 180, 160, 45);
+        comboBoxTipoDeReseña.setBackground(new Color(240,240,240));
+        comboBoxTipoDeReseña.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+
+        // Buttons _____________________________________________________________
+        btnTomarTipoDeReseña = new JButton("Tomar tipo de reseña");
+        btnTomarTipoDeReseña.setBounds(620, 180, 150, 45);
+        btnTomarTipoDeReseña.setBackground(new Color(102, 66, 138));
+        btnTomarTipoDeReseña.setForeground(Color.WHITE);
+        btnTomarTipoDeReseña.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+
+        // Agregar elementos al frame
+        frame.add(labelTipoDeReseña);
+        frame.add(comboBoxTipoDeReseña);
+        frame.add(btnTomarTipoDeReseña);
+
+        labelTipoDeReseña.setVisible(true);
+        comboBoxTipoDeReseña.setVisible(true);
+        btnTomarTipoDeReseña.setVisible(true);
+
+        // Evento para tomar la selección del tipo de reseña
+        btnTomarTipoDeReseña.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e)
+            {
+                String seleccionTipoReseña = tomarSeleccionTipoReseña();
+                if (seleccionTipoReseña == "Sommelier"){
+
+                    // Bloqueamos los elementos de la pantalla
+                    comboBoxTipoDeReseña.setEnabled(false);
+                    btnTomarTipoDeReseña.setVisible(false);
+
+                    // Flujo de control hacia el gestor
+                    gestor.tomarTipoReseñaSeleccionada(seleccionTipoReseña);
+                }
+            }
+        });
+    }
+
+    public String tomarSeleccionTipoReseña(){
+        return comboBoxTipoDeReseña.getSelectedItem().toString();
     }
 
     // TODO Implementar
@@ -209,17 +257,86 @@ public class PantallaGenerarReporteDeRankingDeVinos {
 
     // TODO Implementar
     public void solicitarFormatoVisualizacion(){
-        // solicitar formato de visualizacion
+        // Labels ______________________________________________________________
+        labelFormatoVisualizacion = new JLabel("Seleccione Formato de visualizacion:");
+        labelFormatoVisualizacion.setBounds(250, 230, 160, 20);
+        labelFormatoVisualizacion.setForeground(Color.WHITE);
+
+        // ComboBox ____________________________________________________________
+        comboBoxFormatoVisualizacion = new JComboBox();
+        comboBoxFormatoVisualizacion.addItem("EXCEL (.xslx)");
+        comboBoxFormatoVisualizacion.addItem("otro");
+        comboBoxFormatoVisualizacion.setBounds(250, 260, 160, 45);
+        comboBoxFormatoVisualizacion.setBackground(new Color(240,240,240));
+        comboBoxFormatoVisualizacion.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+
+        // Buttons _____________________________________________________________
+        btnTomarFormatoVisualizacion = new JButton("Tomar tipo de reseña");
+        btnTomarFormatoVisualizacion.setBounds(620, 260, 150, 45);
+        btnTomarFormatoVisualizacion.setBackground(new Color(102, 66, 138));
+        btnTomarFormatoVisualizacion.setForeground(Color.WHITE);
+        btnTomarFormatoVisualizacion.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+
+        // Agregar elementos al frame
+        frame.add(comboBoxFormatoVisualizacion);
+        frame.add(btnTomarFormatoVisualizacion);
+        frame.add(labelFormatoVisualizacion);
+
+        comboBoxFormatoVisualizacion.setEnabled(true);
+        btnTomarFormatoVisualizacion.setVisible(true);
+        labelFormatoVisualizacion.setEnabled(true);
+
+
+        // Evento para tomar la selección del tipo de reseña
+        btnTomarFormatoVisualizacion.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e)
+            {
+                String seleccionFormato = tomarSeleccionFormato();
+                if (seleccionFormato == "EXCEL (.xslx)"){
+                    // Ocultamos los elementos de la pantalla___________
+                    // btnTomarFormatoVisualizacion.setVisible(false);
+                    // comboBoxFormatoVisualizacion.setVisible(false);
+                    // labelFormatoVisualizacion.setVisible(false);
+
+                    btnTomarFormatoVisualizacion.setVisible(false);
+                    comboBoxFormatoVisualizacion.setEnabled(false);
+
+                    gestor.tomarSeleccionFormato(seleccionFormato);
+                }
+            }
+        });
     }
 
     // TODO Implementar
-    public void tomarSeleccionFormato(){
-        // tomar seleccion formato de visualizacion
+    public String tomarSeleccionFormato(){
+        return comboBoxFormatoVisualizacion.getSelectedItem().toString();
     }
 
     // TODO Implementar
     public void solicitarConfirmacion(){
-        // solicitar confirmacion
+        Object[] options = {"Aceptar", "Cancelar"};
+        int choice = JOptionPane.showOptionDialog(null,
+                "¿Deseas continuar?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        // Verificar la opción seleccionada por el usuario
+        if (choice == JOptionPane.YES_OPTION) {
+            // El usuario seleccionó "Aceptar"
+            System.out.println("Se seleccionó Aceptar");
+            confirmarGeneracionReporte();
+        } else if (choice == JOptionPane.NO_OPTION) {
+            // El usuario seleccionó "Cancelar" o cerró el diálogo
+            System.out.println("Se seleccionó Cancelar o se cerró el diálogo");
+            gestor.tomarConfirmacion("NO");
+        }
+    }
+
+    private void confirmarGeneracionReporte (){
+        gestor.tomarConfirmacion("SI");
     }
 
     // TODO Implementar

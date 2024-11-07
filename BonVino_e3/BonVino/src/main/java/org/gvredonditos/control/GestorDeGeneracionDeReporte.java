@@ -17,7 +17,7 @@ public class GestorDeGeneracionDeReporte {
         this.interfazExcel = new InterfazExcel();
     }
 
-    // TODO Implementar
+    // HECHO
     public void generarRankingDeVinos(){
         // 1. Se generaran Datos aleatorios para el ranking de vinos
         System.out.println("Se generaran Datos aleatorios para el ranking de vinos: ");
@@ -26,7 +26,7 @@ public class GestorDeGeneracionDeReporte {
         pantalla.solicitarFechaDesdeYFechaHasta();
     };
 
-    // TODO Implementar
+    // HECHO
     public void tomarFechaDesdeYFechaHasta(Date fechaDesde, Date fechaHasta){
         // 2. Se tomaran las fechas desde y hasta
         System.out.println("Se tomaran las fechas desde y hasta: ");
@@ -40,24 +40,34 @@ public class GestorDeGeneracionDeReporte {
         pantalla.solicitarTipoDeReseña();
     };
 
-    // TODO Implementar
-    public Boolean validarFechas(){
-        return null;
-    };
+    // HECHO
+    public void tomarTipoReseñaSeleccionada(String seleccionTipoReseñas){
+        this.seleccionTipoReseñas = seleccionTipoReseñas;
 
-    // TODO Implementar
-    public void tomarTipoDeReseñaSeleccionada(){
-
-    };
-
-    // TODO Implementar
-    public void tomarFormatoVisualizacion(){
+        System.out.println("Tipo de reseña seleccionada: " + seleccionTipoReseñas);
+        pantalla.solicitarFormatoVisualizacion();
 
     };
 
-    // TODO Implementar
-    public void tomarConfirmacion(){
+    // HECHO
+    public void tomarSeleccionFormato(String seleccionFormatoVisualizacion){
+        this.seleccionFormatoVisualizacion = seleccionFormatoVisualizacion;
+        System.out.println("Formato de visualizacion seleccionado: " + seleccionFormatoVisualizacion);
 
+        pantalla.solicitarConfirmacion();
+    };
+
+    // HECHO
+    public void tomarConfirmacion(String confirmacion){
+        if(confirmacion.equals("SI")){
+            buscarVinosConReseñaSolicitada();
+        }else{
+            finCU();
+        }
+    }
+
+    public void buscarVinosConReseñaSolicitada(){
+        System.out.println("Buscando vinos con reseña solicitada...");
     }
 
 
