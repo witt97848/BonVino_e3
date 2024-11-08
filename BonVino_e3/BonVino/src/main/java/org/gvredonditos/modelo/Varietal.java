@@ -13,7 +13,7 @@ public class Varietal {
 
     @OneToOne
     @JoinColumn(name = "tipo_uva_id", referencedColumnName = "id")
-    private TipoUva tipoUvaId;
+    private TipoUva tipoUva;
 
     @ManyToOne
     @JoinColumn(name = "vino_id", referencedColumnName = "id")
@@ -23,8 +23,12 @@ public class Varietal {
 
     public String toString(){
         return "Varietal (" + id + ") " + descripcion + ", porcentajeComposicion: " + porcentajeComposicion +
-                "\n  " + tipoUvaId.toString() +
+                "\n  " + tipoUva.toString() +
                 "\n  " + vino.getNombre();
+    }
+
+    public String getDescripcion(){
+        return tipoUva.getNombre();
     }
 
 }

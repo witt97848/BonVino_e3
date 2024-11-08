@@ -32,6 +32,10 @@ public class Bodega {
         return region;
     }
 
+    public String getNombrePais(){
+        return region.getNombrePais();
+    }
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "region_id", referencedColumnName = "id")
     private RegionVitivinicola region;

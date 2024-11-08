@@ -32,13 +32,16 @@ public class IteradorVinos implements IIterador<Vino, LocalDate>{
 
     @Override
     public Boolean cumpleFiltros(List<LocalDate> filtro, Vino elem) {
-        return true;
+        return elem.calcularPromedioReseñasSommelierPeriodo(filtro) > 0;
     }
 
     @Override
     public Vino actual() {
         Vino elemActual = elementos.get(posicionActual);
-        return elemActual;
-//        cumpleFiltros()
+        if (cumpleFiltros(filtroPeriodo, elemActual)){
+            return elemActual;
+        } else {
+            return null;
+        }
     }
 }

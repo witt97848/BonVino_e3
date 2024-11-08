@@ -2,7 +2,6 @@ package org.gvredonditos.control;
 
 import org.gvredonditos.interfaces.InterfazExcel;
 import org.gvredonditos.interfaces.PantallaGenerarReporteDeRankingDeVinos;
-import org.gvredonditos.iterators.IAgregado;
 import org.gvredonditos.iterators.IIterador;
 import org.gvredonditos.iterators.IteradorVinos;
 import org.gvredonditos.modelo.Vino;
@@ -10,6 +9,7 @@ import org.gvredonditos.repositories.VinoRepository;
 import java.time.LocalDate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 //public class GestorDeGeneracionDeReporte implements IAgregado<Vino> {
 public class GestorDeGeneracionDeReporte {
@@ -20,6 +20,7 @@ public class GestorDeGeneracionDeReporte {
     private List<LocalDate> periodo;
     private String seleccionTipoReseñas, seleccionFormatoVisualizacion, formatoVisualizacion;
     private VinoRepository vinoRepository;
+    private List<String> top10RankingVinos;
 
     private List<Vino> vinos;
 
@@ -29,6 +30,7 @@ public class GestorDeGeneracionDeReporte {
         this.vinoRepository = new VinoRepository();
         this.vinos = vinoRepository.findAll();
         this.periodo = new ArrayList<>();
+        this.top10RankingVinos = new ArrayList<>();
     }
 
     // HECHO
@@ -82,14 +84,55 @@ public class GestorDeGeneracionDeReporte {
 
     // TODO TESTIINNGGG
     public void buscarVinosConReseñaSolicitada(){
-        System.out.println("Buscando vinos con reseña solicitada...");
-        vinos.forEach(System.out::println);
-        for (Vino vino : vinos) {
-            vino.calcularPromedioReseñasSommelierPeriodo(periodo);
+        System.out.println("Buscando vinos con al menos 1 reseña premium en periodo...");
+
+        // Variables temporales para formar el ranking
+
+        Map<Float, String> rankingVinos = new HashMap<>();
+        Float promedioReseñas;
+        String dataVino;
+
+
+        IIterador iteradorVinos = crearIterador(vinos);
+
+        iteradorVinos.primero();
+
+        while (!iteradorVinos.haTerminado()){
+            Vino vino = (Vino) iteradorVinos.actual();
+
+            if (vino != null){
+                promedioReseñas = vino.calcularPromedioReseñasSommelierPeriodo(periodo);
+
+                dataVino =
+                            " - " + vino.getNombre() + "[" + vino.getId() + "]" +
+                            "\n  Calificacion general: " + vino.getPromedioCalificacionGeneral() +
+                            "\n  Bodega: " + vino.getBodega().getNombre() +
+                            "\n  Region: " + vino.getRegion() +
+                            "\n  Pais: " + vino.getNombrePais() +
+                            "\n  Precio: " + vino.getPrecioArs() +
+                            "\n  Varietales: " + vino.getVarietales();
+
+                rankingVinos.put(promedioReseñas, dataVino);
+
+//                System.out.println(dataVino);
+            }
+            iteradorVinos.siguiente();
         }
+
+        // Lineas de ranking
+        top10RankingVinos = rankearVinos(rankingVinos);
+
     }
 
+    public List<String> rankearVinos(Map<Float, String> rankingVinos){
+        return rankingVinos.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Float, String>comparingByKey().reversed()) // Orden descendente
+                .limit(10) // Limitar a los primeros 10
+                .map(entry -> "\nPromedio Sommelier: " + entry.getKey() + entry.getValue()) // Formato requerido
+                .collect(Collectors.toList());
 
+    }
 
 
     public void finCU(){

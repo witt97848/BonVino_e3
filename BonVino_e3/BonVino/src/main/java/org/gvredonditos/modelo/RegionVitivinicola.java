@@ -28,6 +28,10 @@ public class RegionVitivinicola {
         return provincia;
     }
 
+    public String getNombrePais(){
+        return provincia.getNombrePais();
+    }
+
     public String toString() {
         return "RegionVitivinicola [id=" + id + ", nombre=" + nombre + ", provinciaId=" + provincia.getNombre() + "]";
     }

@@ -28,6 +28,10 @@ public class Provincia {
         return pais;
     }
 
+    public String getNombrePais(){
+        return pais.getNombre();
+    }
+
     public List<RegionVitivinicola> getRegiones() {
         return regiones;
     }

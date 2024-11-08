@@ -62,8 +62,18 @@ public class Vino implements IAgregado<Reseña> {
         return reseñas;
     }
 
-    public List<Varietal> getVarietales(){
-        return varietales;
+    public String getVarietales(){
+        String varietalesString = "";
+
+        for (Varietal varietal : varietales) {
+            varietalesString += " - " + varietal.getDescripcion();
+        }
+
+        return varietalesString;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getNombre(){
@@ -76,6 +86,14 @@ public class Vino implements IAgregado<Reseña> {
 
     public Bodega getBodega(){
         return bodega;
+    }
+
+    public String getNombrePais(){
+        return bodega.getNombrePais();
+    }
+
+    public String getRegion(){
+        return bodega.getRegion().getNombre();
     }
 
     public Float calcularPromedioReseñasSommelierPeriodo(List<LocalDate> periodo){
@@ -91,19 +109,21 @@ public class Vino implements IAgregado<Reseña> {
             Reseña reseña = (Reseña) iteradorReseñas.actual();
 
             if (reseña != null){
-                System.out.println(reseña.getFecha() + " - " + (reseña.esPremium() ? "PRE":"NOP") + " - " + reseña.getPuntaje());
                 total_puntaje_periodo += reseña.getPuntaje();
                 cantidad_resenas_periodo++;
 
             }
             iteradorReseñas.siguiente();
         }
-
-        System.out.println(id + " - " + nombre);
-        System.out.println("promedio premium: " + (cantidad_resenas_periodo > 0 ? total_puntaje_periodo / cantidad_resenas_periodo : 0.0f) + "\n");
-
-
         return cantidad_resenas_periodo > 0 ? total_puntaje_periodo / cantidad_resenas_periodo : 0.0f;
+    }
+
+    public Float getPromedioCalificacionGeneral(){
+        Float total = 0.0f;
+        for (Reseña reseña : reseñas) {
+            total += reseña.getPuntaje();
+        }
+        return reseñas.size() > 0 ? total / reseñas.size() : 0.0f;
     }
 
     public IIterador crearIterador(List<Reseña> reseñas){
