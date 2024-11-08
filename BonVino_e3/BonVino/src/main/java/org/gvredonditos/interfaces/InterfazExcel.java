@@ -21,17 +21,17 @@ public class InterfazExcel {
         }
         for (String vino : vinosCSV) {
             fila = List.of(vino.split(","));
-            System.out.println(fila);
-//            System.out.println(
-//                    "\nVino: (" + fila.get(1) + ") " + fila.get(2)  +
-//                            "\n   Promedio Sommelier: " + fila.get(0) +
-//                            "\n   Promedio general: " + fila.get(3) +
-//                            "\n   Bodega: " + fila.get(4) +
-//                            "\n   Region: " + fila.get(5) +
-//                            "\n   Pais: " + fila.get(6) +
-//                            "\n   Precio: " + fila.get(7) +
-//                            "\n   Varietales: " + fila.get(8)
-//            );
+//            System.out.println(fila);
+            System.out.println(
+                    "\nVino: (" + fila.get(1) + ") " + fila.get(2)  +
+                            "\n   Promedio Sommelier: " + fila.get(0) +
+                            "\n   Promedio general: " + fila.get(3) +
+                            "\n   Bodega: " + fila.get(4) +
+                            "\n   Region: " + fila.get(5) +
+                            "\n   Pais: " + fila.get(6) +
+                            "\n   Precio: " + fila.get(7) +
+                            "\n   Varietales: " + fila.get(8)
+            );
         }
         System.out.println("Excel file exported successfully!");
     }
