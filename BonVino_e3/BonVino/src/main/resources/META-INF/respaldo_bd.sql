@@ -1,67 +1,72 @@
 CREATE TABLE IF NOT EXISTS paises (
                                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                                       nombre VARCHAR(255)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS provincias (
                                           id INTEGER PRIMARY KEY AUTOINCREMENT,
                                           nombre VARCHAR(255),
-    pais_id INT,
-    FOREIGN KEY (pais_id) REFERENCES paises(id)
-    );
+                                          pais_id INT,
+                                          FOREIGN KEY (pais_id) REFERENCES paises(id)
+);
 
 CREATE TABLE IF NOT EXISTS regiones_vitivinicolas (
                                                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                       nombre VARCHAR(255),
-    descripcion VARCHAR(255),
-    provincia_id INT,
-    FOREIGN KEY (provincia_id) REFERENCES provincias(id)
-    );
+                                                      descripcion VARCHAR(255),
+                                                      provincia_id INT,
+                                                      FOREIGN KEY (provincia_id) REFERENCES provincias(id)
+);
 
 CREATE TABLE IF NOT EXISTS bodegas (
                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                                        descripcion VARCHAR(255),
-    historia VARCHAR(255),
-    nombre VARCHAR(255),
-    region_id INT NOT NULL,
-    FOREIGN KEY (region_id) REFERENCES regiones_vitivinicolas(id)
-    );
+                                       historia VARCHAR(255),
+                                       nombre VARCHAR(255),
+                                       region_id INT NOT NULL,
+                                       coordenadas_ubicacion VARCHAR(255),
+                                       periodo_actualizacion VARCHAR(255),
+                                       FOREIGN KEY (region_id) REFERENCES regiones_vitivinicolas(id)
+);
 
 
 CREATE TABLE IF NOT EXISTS vinos (
                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                                      nombre VARCHAR(255),
-    bodega_id INT NOT NULL,
-    precio_ars FLOAT,
-    FOREIGN KEY (bodega_id) REFERENCES bodegas(id)
-    );
+                                     bodega_id INT NOT NULL,
+                                     precio_ars FLOAT,
+                                     añada INT,
+                                     imagen_etiqueta VARCHAR,
+                                     nota_cata_bodega VARCHAR,
+                                     FOREIGN KEY (bodega_id) REFERENCES bodegas(id)
+);
 
 
 CREATE TABLE IF NOT EXISTS tipos_uva (
                                          id INTEGER PRIMARY KEY AUTOINCREMENT,
                                          descripcion VARCHAR(255),
-    nombre VARCHAR(255)
-    );
+                                         nombre VARCHAR(255)
+);
 
 CREATE TABLE IF NOT EXISTS varietales (
                                           id INTEGER PRIMARY KEY AUTOINCREMENT,
                                           descripcion VARCHAR(255),
-    porcentaje_composicion FLOAT,
-    tipo_uva_id INT,
-    vino_id INT,
-    FOREIGN KEY (tipo_uva_id) REFERENCES tipos_uva(id),
-    FOREIGN KEY (vino_id) REFERENCES vinos(id)
-    );
+                                          porcentaje_composicion FLOAT,
+                                          tipo_uva_id INT,
+                                          vino_id INT,
+                                          FOREIGN KEY (tipo_uva_id) REFERENCES tipos_uva(id)
+                                              FOREIGN KEY (vino_id) REFERENCES vinos(id)
+);
 
 CREATE TABLE IF NOT EXISTS reseñas (
                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                                        comentario VARCHAR(255),
-    es_premium BOOLEAN,
-    fecha_reseña DATE,
-    puntaje FLOAT,
-    vino_id INT,
-    FOREIGN KEY (vino_id) REFERENCES vinos(id)
-    );
+                                       es_premium BOOLEAN,
+                                       fecha_reseña DATE,
+                                       puntaje FLOAT,
+                                       vino_id INT,
+                                       FOREIGN KEY (vino_id) REFERENCES vinos(id)
+);
 
 -- Inserción en la tabla paises
 INSERT INTO paises (nombre) VALUES
@@ -95,33 +100,31 @@ INSERT INTO regiones_vitivinicolas (nombre, descripcion, provincia_id) VALUES
                                                                            ('Valle de Casablanca', 'Región costera en Chile famosa por sus vinos blancos frescos.', 3),
                                                                            ('Rioja', 'Una de las regiones vinícolas más famosas de España, conocida por sus Tempranillos.', 4);
 
--- Inserción en la tabla bodegas
-INSERT INTO bodegas (descripcion, historia, nombre, region_id) VALUES
-                                                                   ('Bodega centenaria especializada en Malbec.', 'Fundada en 1900.', 'Bodeguita', 1),
-                                                                   ('Pequeña bodega familiar en Maipú.', 'Con tradición de 50 años.', 'Bodegon', 2),
-                                                                   ('Famosa por sus tintos intensos.', 'Fundada en 1985.', 'LaMarta', 4),
-                                                                   ('Conocida por su pisco y vinos frescos.', 'Fundada en 1970.', 'Aberlour', 3),
-                                                                   ('Productora de vinos blancos de alta gama.', 'Fundada en 1920.', 'OsRios', 5);
+-- Inserción de bodegas con los nuevos campos: coordenadas_ubicacion y periodo_actualizacion
+INSERT INTO bodegas (descripcion, historia, nombre, region_id, coordenadas_ubicacion, periodo_actualizacion) VALUES
+                                                                                                                 ('Bodega centenaria especializada en Malbec.', 'Fundada en 1900.', 'Bodeguita', 1, '-33.12345, -68.45678', 'Anual'),
+                                                                                                                 ('Pequeña bodega familiar en Maipú.', 'Con tradición de 50 años.', 'Bodegon', 2, '-32.87654, -68.23456', 'Semestral'),
+                                                                                                                 ('Famosa por sus tintos intensos.', 'Fundada en 1985.', 'LaMarta', 4, '-34.12345, -69.87654', 'Mensual'),
+                                                                                                                 ('Conocida por su pisco y vinos frescos.', 'Fundada en 1970.', 'Aberlour', 3, '-33.98765, -70.12345', 'Trimestral'),
+                                                                                                                 ('Productora de vinos blancos de alta gama.', 'Fundada en 1920.', 'OsRios', 5, '-31.54321, -68.54321', 'Anual');
 
--- Inserción de vinos con nombres aleatorios
-INSERT INTO vinos (nombre, bodega_id, precio_ars) VALUES
-                                                      ('Malbec del Valle', 1, 3200.00),  -- Bodeguita, Varietal: Malbec
-                                                      ('Reserva Maipú', 2, 2500.00),     -- Bodegon, Varietal: Cabernet Sauvignon/Merlot
-                                                      ('Cielo Tinto', 4, 3800.00),       -- LaMarta, Varietal: Syrah
-                                                      ('Fresca Viña', 3, 2700.00),       -- Aberlour, Varietal: Chardonnay
-                                                      ('Brisa de Toscana', 5, 4200.00),  -- OsRios, Varietal: Chardonnay
-                                                      ('Gran Reserva Uco', 1, 5500.00),  -- Bodeguita, Varietal: Malbec
-                                                      ('Tinto del Sol', 2, 2900.00),     -- Bodegon, Varietal: Cabernet Sauvignon/Merlot
-                                                      ('Viña del Valle', 4, 4600.00),    -- LaMarta, Varietal: Syrah
-                                                      ('Frescor del Elqui', 3, 3100.00), -- Aberlour, Varietal: Chardonnay
-                                                      ('Borgoña Oscuro', 5, 5300.00),    -- OsRios, Varietal: Chardonnay
-                                                      ('Luján de Cuyo Clásico', 1, 4000.00),  -- Bodeguita, Varietal: Malbec
-                                                      ('Pescador del Valle', 2, 2300.00),    -- Bodegon, Varietal: Cabernet Sauvignon/Merlot
-                                                      ('Viña El Tesoro', 4, 3700.00),    -- LaMarta, Varietal: Syrah
-                                                      ('Cosecha de Altura', 3, 3400.00),  -- Aberlour, Varietal: Chardonnay
-                                                      ('Toscana Noble', 5, 4800.00);     -- OsRios, Varietal: Chardonnay
-
-
+-- Inserción de vinos con nuevos campos: añada, imagen_etiqueta, y nota_cata_bodega
+INSERT INTO vinos (nombre, bodega_id, precio_ars, añada, imagen_etiqueta, nota_cata_bodega) VALUES
+                                                                                                ('Malbec del Valle', 1, 3200.00, 2019, 'https://example.com/malbec_del_valle.jpg', 'Aromas intensos de frutos rojos y especias. Final persistente.'),
+                                                                                                ('Reserva Maipú', 2, 2500.00, 2020, 'https://example.com/reserva_maipu.jpg', 'Suave en boca, con toques de frutos secos y chocolate amargo.'),
+                                                                                                ('Cielo Tinto', 4, 3800.00, 2021, 'https://example.com/cielo_tinto.jpg', 'Cuerpo robusto con notas de ciruela y pimienta negra.'),
+                                                                                                ('Fresca Viña', 3, 2700.00, 2020, 'https://example.com/fresca_vina.jpg', 'Fresco y vivaz, con notas cítricas y herbales. Perfecto para mariscos.'),
+                                                                                                ('Brisa de Toscana', 5, 4200.00, 2018, 'https://example.com/brisa_de_toscana.jpg', 'Elegante, con notas de manzana verde y almendras tostadas.'),
+                                                                                                ('Gran Reserva Uco', 1, 5500.00, 2019, 'https://example.com/gran_reserva_uco.jpg', 'Complejo y estructurado, con aromas a frutos negros y tabaco.'),
+                                                                                                ('Tinto del Sol', 2, 2900.00, 2021, 'https://example.com/tinto_del_sol.jpg', 'Frutal y redondo en boca, ideal para acompañar carnes rojas.'),
+                                                                                                ('Viña del Valle', 4, 4600.00, 2020, 'https://example.com/vina_del_valle.jpg', 'Notas de frambuesa y especias, con taninos suaves y redondos.'),
+                                                                                                ('Frescor del Elqui', 3, 3100.00, 2022, 'https://example.com/frescor_del_elqui.jpg', 'Refrescante y mineral, con toques cítricos que resaltan en boca.'),
+                                                                                                ('Borgoña Oscuro', 5, 5300.00, 2019, 'https://example.com/borgona_oscuro.jpg', 'Cuerpo potente con taninos firmes y notas de frutos negros.'),
+                                                                                                ('Luján de Cuyo Clásico', 1, 4000.00, 2018, 'https://example.com/lujan_de_cuyo_clasico.jpg', 'Robusto y aromático, con presencia de frutos del bosque y especias.'),
+                                                                                                ('Pescador del Valle', 2, 2300.00, 2022, 'https://example.com/pescador_del_valle.jpg', 'Ligeramente frutal, con un toque de acidez y frescura.'),
+                                                                                                ('Viña El Tesoro', 4, 3700.00, 2021, 'https://example.com/vina_el_tesoro.jpg', 'Profundo y elegante, con aromas a frutos rojos y vainilla.'),
+                                                                                                ('Cosecha de Altura', 3, 3400.00, 2020, 'https://example.com/cosecha_de_altura.jpg', 'Equilibrado con notas de frutos tropicales y un toque de roble.'),
+                                                                                                ('Toscana Noble', 5, 4800.00, 2019, 'https://example.com/toscana_noble.jpg', 'Complejo y redondo en boca, con sabores a ciruela y chocolate.');
 
 INSERT INTO tipos_uva (descripcion, nombre) VALUES
                                                 ('Uva tinta popular en Argentina', 'Malbec'),
@@ -129,7 +132,6 @@ INSERT INTO tipos_uva (descripcion, nombre) VALUES
                                                 ('Conocida por su suavidad y notas frutales', 'Merlot'),
                                                 ('Uva con un sabor especiado y profundo', 'Syrah'),
                                                 ('Uva blanca famosa por sus vinos frescos y crujientes', 'Chardonnay');
-
 
 INSERT INTO varietales (descripcion, porcentaje_composicion, tipo_uva_id, vino_id) VALUES
                                                                                        ('Malbec 100%', 100.0, 1, 1),
@@ -152,10 +154,6 @@ INSERT INTO varietales (descripcion, porcentaje_composicion, tipo_uva_id, vino_i
                                                                                        ('Tannat 100%', 100.0, 3, 3),
                                                                                        ('Pinot Grigio 100%', 100.0, 2, 4),
                                                                                        ('Zinfandel 100%', 100.0, 4, 5);
-
-
-
-
 
 -- Inserción de reseñas
 INSERT INTO reseñas (comentario, es_premium, fecha_reseña, puntaje, vino_id) VALUES
@@ -193,7 +191,7 @@ INSERT INTO reseñas (comentario, es_premium, fecha_reseña, puntaje, vino_id) V
                                                                                  ('No me impresionó tanto como esperaba. Tiene buen sabor, pero algo plano.', FALSE, '2024-11-28', 3.5, 5),
                                                                                  ('Siento que este vino podría mejorar con el tiempo. Aún así es bastante bueno.', FALSE, '2024-11-29', 3.8, 1),
                                                                                  ('Frescor y notas cítricas que lo hacen único. Perfecto para maridar con pescado.', TRUE, '2024-11-30', 4.5, 3),
-                                                                                 ('Un vino elegante con notas de frutos rojos y especias. Muy bien logrado.', TRUE, '2024-12-01', 4.7, 4),
+                                                                                 ('Un vino elegante con notas de frutos rojos y especias. Muy bien logrado.', TRUE, '2024-12-01', 4.7, 4);
 ('Un vino suave y equilibrado, perfecto para acompañar pastas.', FALSE, '2024-12-02', 4.0, 6),
 ('Me encantaron las notas de chocolate y café. Un vino robusto y elegante.', TRUE, '2024-12-03', 4.7, 7),
 ('Un poco ácido para mi gusto, pero bien estructurado.', FALSE, '2024-12-04', 3.2, 8),
