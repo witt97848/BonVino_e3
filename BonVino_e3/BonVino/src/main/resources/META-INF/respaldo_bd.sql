@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS varietales (
     porcentaje_composicion FLOAT,
     tipo_uva_id INT,
     vino_id INT,
-    FOREIGN KEY (tipo_uva_id) REFERENCES tipos_uva(id)
+    FOREIGN KEY (tipo_uva_id) REFERENCES tipos_uva(id),
     FOREIGN KEY (vino_id) REFERENCES vinos(id)
     );
 
