@@ -122,6 +122,11 @@ public class GestorDeGeneracionDeReporte {
         // Lineas de ranking
         top10RankingVinos = rankearVinos(rankingVinos);
 
+        // TODO ELIMINAR (solo para mostrar)
+        for (String vino : top10RankingVinos){
+            System.out.println(vino);
+        }
+
     }
 
     public List<String> rankearVinos(Map<Float, String> rankingVinos){
