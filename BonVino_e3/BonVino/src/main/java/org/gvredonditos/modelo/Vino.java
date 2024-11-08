@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "vinos")
-public class Vino implements IAgregado<Reseña> {
+public class Vino implements IAgregado<Reseña, LocalDate> {
     @Id
     private int id;
     private String nombre;
@@ -29,9 +29,6 @@ public class Vino implements IAgregado<Reseña> {
 
     @OneToMany(mappedBy = "vino", fetch = FetchType.EAGER)
     private List<Varietal> varietales;
-
-    @Transient
-    private List<LocalDate> periodo;
 
     public Vino() {}
 
@@ -66,7 +63,7 @@ public class Vino implements IAgregado<Reseña> {
         String varietalesString = "";
 
         for (Varietal varietal : varietales) {
-            varietalesString += " - " + varietal.getDescripcion();
+            varietalesString += varietal.getDescripcion() + " - ";
         }
 
         return varietalesString;
@@ -84,6 +81,10 @@ public class Vino implements IAgregado<Reseña> {
         return precioArs;
     }
 
+    public String getNombreBodega(){
+        return bodega.getNombre();
+    }
+
     public Bodega getBodega(){
         return bodega;
     }
@@ -92,13 +93,13 @@ public class Vino implements IAgregado<Reseña> {
         return bodega.getNombrePais();
     }
 
-    public String getRegion(){
+    public String getNombreRegion(){
         return bodega.getRegion().getNombre();
     }
 
     public Float calcularPromedioReseñasSommelierPeriodo(List<LocalDate> periodo){
-        this.periodo = periodo;
-        IIterador iteradorReseñas = crearIterador(reseñas);
+
+        IIterador iteradorReseñas = crearIterador(reseñas, periodo);
 
         iteradorReseñas.primero();
 
@@ -115,7 +116,11 @@ public class Vino implements IAgregado<Reseña> {
             }
             iteradorReseñas.siguiente();
         }
-        return cantidad_resenas_periodo > 0 ? total_puntaje_periodo / cantidad_resenas_periodo : 0.0f;
+        return promediarReseñas(total_puntaje_periodo, cantidad_resenas_periodo);
+    }
+
+    public Float promediarReseñas(Float puntajeTotal, Float cantidadReseñas){
+        return cantidadReseñas > 0 ? puntajeTotal / cantidadReseñas : 0.0f;
     }
 
     public Float getPromedioCalificacionGeneral(){
@@ -126,7 +131,7 @@ public class Vino implements IAgregado<Reseña> {
         return reseñas.size() > 0 ? total / reseñas.size() : 0.0f;
     }
 
-    public IIterador crearIterador(List<Reseña> reseñas){
+    public IIterador crearIterador(List<Reseña> reseñas, List<LocalDate> periodo){
         return new IteradorReseñas(reseñas, periodo);
     }
 

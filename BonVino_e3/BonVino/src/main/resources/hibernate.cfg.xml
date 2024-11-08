@@ -8,7 +8,7 @@
     <session-factory>
         <!-- Configuración de la base de datos -->
         <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-        <property name="hibernate.connection.url">jdbc:sqlite:E:\Estudios\UTN\2024 3K3\DSI\PPAI_BonVino_e3\BonVino_e3\BonVino\src\main\resources\META-INF\bonvino_db.db</property>
+        <property name="hibernate.connection.url">jdbc:sqlite:src\main\resources\META-INF\bonvino_db.db</property>
         <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
 
 

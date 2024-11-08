@@ -2,6 +2,7 @@ package org.gvredonditos.control;
 
 import org.gvredonditos.interfaces.InterfazExcel;
 import org.gvredonditos.interfaces.PantallaGenerarReporteDeRankingDeVinos;
+import org.gvredonditos.iterators.IAgregado;
 import org.gvredonditos.iterators.IIterador;
 import org.gvredonditos.iterators.IteradorVinos;
 import org.gvredonditos.modelo.Vino;
@@ -11,8 +12,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//public class GestorDeGeneracionDeReporte implements IAgregado<Vino> {
-public class GestorDeGeneracionDeReporte {
+
+public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
 
     public PantallaGenerarReporteDeRankingDeVinos pantalla;
     public InterfazExcel interfazExcel;
@@ -84,7 +85,7 @@ public class GestorDeGeneracionDeReporte {
 
     // TODO TESTIINNGGG
     public void buscarVinosConReseñaSolicitada(){
-        System.out.println("Buscando vinos con al menos 1 reseña premium en periodo...");
+        System.out.println("Vinos con reseñas premium en periodo: "+ fechaDesde + " - " + fechaHasta);
 
         // Variables temporales para formar el ranking
 
@@ -93,7 +94,7 @@ public class GestorDeGeneracionDeReporte {
         String dataVino;
 
 
-        IIterador iteradorVinos = crearIterador(vinos);
+        IIterador iteradorVinos = crearIterador(vinos, periodo);
 
         iteradorVinos.primero();
 
@@ -103,18 +104,16 @@ public class GestorDeGeneracionDeReporte {
             if (vino != null){
                 promedioReseñas = vino.calcularPromedioReseñasSommelierPeriodo(periodo);
 
-                dataVino =
-                            " - " + vino.getNombre() + "[" + vino.getId() + "]" +
-                            "\n  Calificacion general: " + vino.getPromedioCalificacionGeneral() +
-                            "\n  Bodega: " + vino.getBodega().getNombre() +
-                            "\n  Region: " + vino.getRegion() +
-                            "\n  Pais: " + vino.getNombrePais() +
-                            "\n  Precio: " + vino.getPrecioArs() +
-                            "\n  Varietales: " + vino.getVarietales();
+                dataVino =      vino.getId() + // 1 ID
+                                "," + vino.getNombre() + // 2 Nombre
+                                "," + vino.getPromedioCalificacionGeneral() + // 3 Promedio Calificacion General
+                                "," + vino.getNombreBodega() + // 4 Bodega
+                                "," + vino.getNombreRegion() + // 5 Region
+                                "," + vino.getNombrePais() + // 6 Pais
+                                "," + vino.getPrecioArs() + // 7 Precio
+                                "," + vino.getVarietales(); // 8 Varietales
 
                 rankingVinos.put(promedioReseñas, dataVino);
-
-//                System.out.println(dataVino);
             }
             iteradorVinos.siguiente();
         }
@@ -122,10 +121,14 @@ public class GestorDeGeneracionDeReporte {
         // Lineas de ranking
         top10RankingVinos = rankearVinos(rankingVinos);
 
-        // TODO ELIMINAR (solo para mostrar)
-        for (String vino : top10RankingVinos){
-            System.out.println(vino);
-        }
+
+//        // TODO SOLO A MODO DE PRESENTACION (EL CU24 NO PIDE MOSTRAR LOS DATOS GENERADOS, SOLO PIDE GENERAR EL ARCHIVO)
+//        for (String vino : top10RankingVinos){
+//            System.out.println(vino);
+//        }
+
+        generarArchivo(top10RankingVinos);
+        finCU();
 
     }
 
@@ -134,20 +137,23 @@ public class GestorDeGeneracionDeReporte {
                 .stream()
                 .sorted(Map.Entry.<Float, String>comparingByKey().reversed()) // Orden descendente
                 .limit(10) // Limitar a los primeros 10
-                .map(entry -> "\nPromedio Sommelier: " + entry.getKey() + entry.getValue()) // Formato requerido
+                .map(entry -> entry.getKey() + "," + entry.getValue()) // Formato requerido csv
                 .collect(Collectors.toList());
-
     }
 
+    public void generarArchivo(List<String> vinosFiltrados){
+        interfazExcel.exportarExcel(vinosFiltrados);
+    }
 
     public void finCU(){
+        System.out.println("Fin de CU24");
         pantalla.cerrar();
     }
 
     // Implementacion de los metodos de la interfaz IAgregado
 
     // TODO Implementar el metodo crearIterador
-    public IIterador crearIterador(List<Vino> elementos) {
+    public IIterador crearIterador(List<Vino> elementos, List<LocalDate> periodo){
         return new IteradorVinos(vinos, periodo);
     }
 }

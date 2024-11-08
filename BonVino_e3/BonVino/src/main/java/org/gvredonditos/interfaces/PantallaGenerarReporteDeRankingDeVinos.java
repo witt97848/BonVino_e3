@@ -255,11 +255,6 @@ public class PantallaGenerarReporteDeRankingDeVinos {
     }
 
     // TODO Implementar
-    public void tomarSeleccionSommelier(){
-        // tomar seleccion sommelier
-    }
-
-    // TODO Implementar
     public void solicitarFormatoVisualizacion(){
         // Labels ______________________________________________________________
         labelFormatoVisualizacion = new JLabel("Seleccione Formato de visualizacion:");
