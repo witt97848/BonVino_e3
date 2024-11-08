@@ -1,12 +1,17 @@
 package org.gvredonditos.modelo;
 
 import jakarta.persistence.*;
+import org.gvredonditos.iterators.IAgregado;
+import org.gvredonditos.iterators.IIterador;
+import org.gvredonditos.iterators.IteradorReseñas;
 
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "vinos")
-public class Vino {
+public class Vino implements IAgregado<Reseña> {
     @Id
     private int id;
     private String nombre;
@@ -25,6 +30,8 @@ public class Vino {
     @OneToMany(mappedBy = "vino", fetch = FetchType.EAGER)
     private List<Varietal> varietales;
 
+    @Transient
+    private List<LocalDate> periodo;
 
     public Vino() {}
 
@@ -38,7 +45,7 @@ public class Vino {
 
         String cadena = "";
         for (Reseña reseña : reseñas) {
-            cadena += "  " + (reseña.getEsPremium() ? "Premium" : "No Premium") + " - " + reseña.getPuntaje().toString() + "\n";
+            cadena += "  " + (reseña.esPremium() ? "Premium" : "No Premium") + " - " + reseña.getPuntaje().toString() + " - " + reseña.getFecha() + "\n";
         }
         return cadena;
     }
@@ -63,8 +70,44 @@ public class Vino {
         return nombre;
     }
 
+    public Float getPrecioArs(){
+        return precioArs;
+    }
+
+    public Bodega getBodega(){
+        return bodega;
+    }
+
+    public Float calcularPromedioReseñasSommelierPeriodo(List<LocalDate> periodo){
+        this.periodo = periodo;
+        IIterador iteradorReseñas = crearIterador(reseñas);
+
+        iteradorReseñas.primero();
+
+        Float total_puntaje_periodo = 0.0f;
+        Float cantidad_resenas_periodo = 0.0f;
+
+        while (!iteradorReseñas.haTerminado()){
+            Reseña reseña = (Reseña) iteradorReseñas.actual();
+
+            if (reseña != null){
+                System.out.println(reseña.getFecha() + " - " + (reseña.esPremium() ? "PRE":"NOP") + " - " + reseña.getPuntaje());
+                total_puntaje_periodo += reseña.getPuntaje();
+                cantidad_resenas_periodo++;
+
+            }
+            iteradorReseñas.siguiente();
+        }
+
+        System.out.println(id + " - " + nombre);
+        System.out.println("promedio premium: " + (cantidad_resenas_periodo > 0 ? total_puntaje_periodo / cantidad_resenas_periodo : 0.0f) + "\n");
+
+
+        return cantidad_resenas_periodo > 0 ? total_puntaje_periodo / cantidad_resenas_periodo : 0.0f;
+    }
+
+    public IIterador crearIterador(List<Reseña> reseñas){
+        return new IteradorReseñas(reseñas, periodo);
+    }
+
 }
-
-
-//Varietales
-//Reseñas

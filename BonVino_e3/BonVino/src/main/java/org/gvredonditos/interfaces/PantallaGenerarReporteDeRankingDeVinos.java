@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PantallaGenerarReporteDeRankingDeVinos {
     private GestorDeGeneracionDeReporte gestor;
@@ -133,7 +133,7 @@ public class PantallaGenerarReporteDeRankingDeVinos {
             {
                 // __________________________________________ Mensaje 5 del DS
                 try{
-                    Date[] fechas = tomarFechaDesdeFechaHasta();
+                    LocalDate[] fechas = tomarFechaDesdeFechaHasta();
                     // ______________________________________ Mensaje 6 del DS
                     if (validarFechas(fechas[0], fechas[1])){
                         System.out.println("Fechas válidas");
@@ -154,6 +154,7 @@ public class PantallaGenerarReporteDeRankingDeVinos {
                         System.out.println("Fechas inválidas");
                     }
                 } catch (Exception error){
+                    System.out.println(error.toString());
                     JOptionPane.showMessageDialog(null, "Formato de fecha invalida. [dd/mm/yyyy]");
                     System.out.println("Formato de fecha invalida. [dd/mm/yyyy]");
                 }
@@ -176,25 +177,28 @@ public class PantallaGenerarReporteDeRankingDeVinos {
     }
 
     // HECHO
-    public Date[] tomarFechaDesdeFechaHasta(){
-        Date[] fechas = new Date[2];
+    public LocalDate[] tomarFechaDesdeFechaHasta(){
+        LocalDate[] fechas = new LocalDate[2];
 
-        int diaDesde = Integer.parseInt(inputDiaFechaDesde.getText());
-        int mesDesde = Integer.parseInt(inputMesFechaDesde.getText());
-        int añoDesde = Integer.parseInt(inputAñoFechaDesde.getText());
+        String diaDesde = (inputDiaFechaDesde.getText());
+        String mesDesde = (inputMesFechaDesde.getText());
+        String añoDesde = (inputAñoFechaDesde.getText());
 
-        int diaHasta = Integer.parseInt(inputDiaFechaHasta.getText());
-        int mesHasta = Integer.parseInt(inputMesFechaHasta.getText());
-        int añoHasta = Integer.parseInt(inputAñoFechaHasta.getText());
+        String diaHasta = (inputDiaFechaHasta.getText());
+        String mesHasta = (inputMesFechaHasta.getText());
+        String añoHasta = (inputAñoFechaHasta.getText());
 
-        fechas[0] = new Date(añoDesde - 1900, mesDesde - 1, diaDesde); // Fecha desde
-        fechas[1] = new Date(añoHasta - 1900, mesHasta - 1, diaHasta); // Fecha hasta
+        fechas[0] = LocalDate.parse(añoDesde + "-" + mesDesde + "-" + diaDesde); // Fecha desde
+        fechas[1] = LocalDate.parse(añoHasta + "-" + mesHasta + "-" + diaHasta); // Fecha hasta
+
+
+
         return fechas;
     }
 
     // HECHO
-    public Boolean validarFechas (Date fechaDesde, Date fechaHasta){
-        return fechaDesde.before(fechaHasta);
+    public Boolean validarFechas (LocalDate fechaDesde, LocalDate fechaHasta){
+        return fechaDesde.isBefore(fechaHasta);
     }
 
     // TODO Implementar

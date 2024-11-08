@@ -41,11 +41,17 @@ public class Main {
 //        List<Varietal> varietales = varietalRepo.findAll();
 //        varietales.forEach(System.out::println);
 
+//        List<Vino> vinos = vinoRepo.findAll();
+//        vinos.forEach(v -> {
+//            System.out.println(v.toString());
+//            System.out.println(v.getReseñasString());
+//            System.out.println(v.getVarietalesString());
+//        });
+
         List<Vino> vinos = vinoRepo.findAll();
         vinos.forEach(v -> {
             System.out.println(v.toString());
             System.out.println(v.getReseñasString());
-            System.out.println(v.getVarietalesString());
         });
 
         // Cierra el SessionFactory después de su uso
