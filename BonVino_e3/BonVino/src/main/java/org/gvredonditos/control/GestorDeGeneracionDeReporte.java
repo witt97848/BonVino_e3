@@ -34,17 +34,13 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         this.top10RankingVinos = new ArrayList<>();
     }
 
-    // HECHO
     public void generarRankingDeVinos(){
         // Mensaje 4 del DS
         pantalla.solicitarFechaDesdeYFechaHasta();
     };
 
-    // HECHO
-    public void tomarFechaDesdeYFechaHasta(LocalDate fechaDesde, LocalDate fechaHasta){
-        // 2. Se tomaran las fechas desde y hasta
-        System.out.println("Se tomaran las fechas desde y hasta: ");
 
+    public void tomarFechaDesdeYFechaHasta(LocalDate fechaDesde, LocalDate fechaHasta){
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
 
@@ -88,7 +84,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         System.out.println("Vinos con reseñas premium en periodo: "+ fechaDesde + " - " + fechaHasta);
 
         // Variables temporales para formar el ranking
-
         Map<Float, String> rankingVinos = new HashMap<>();
         Float promedioReseñas;
         String dataVino;
@@ -120,12 +115,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
 
         // Lineas de ranking
         top10RankingVinos = rankearVinos(rankingVinos);
-
-
-//        // TODO SOLO A MODO DE PRESENTACION (EL CU24 NO PIDE MOSTRAR LOS DATOS GENERADOS, SOLO PIDE GENERAR EL ARCHIVO)
-//        for (String vino : top10RankingVinos){
-//            System.out.println(vino);
-//        }
 
         generarArchivo(top10RankingVinos);
         finCU();

@@ -11,6 +11,10 @@ public class Bodega {
     private String descripcion;
     private String historia;
     private String nombre;
+    @Column(name = "coordenadas_ubicacion")
+    private String coordenadasUbicacion;
+    @Column(name = "periodo_actualizacion")
+    private String periodoActualizacion;
 
     public int getId() {
         return id;
@@ -27,6 +31,8 @@ public class Bodega {
     public String getNombre() {
         return nombre;
     }
+
+
 
     public RegionVitivinicola getRegion() {
         return region;

@@ -15,22 +15,25 @@ public class Vino implements IAgregado<Reseña, LocalDate> {
     @Id
     private int id;
     private String nombre;
-
     @OneToOne
     @JoinColumn(name = "bodega_id", referencedColumnName = "id")
     private Bodega bodega;
-
     @Column(name = "precio_ars")
     private Float precioArs;
-
-
+    private int añada;
+    @Column(name = "imagen_etiqueta")
+    private String imagenEtiqueta;
+    @Column(name = "nota_cata_bodega")
+    private String notaCataBodega;
     @OneToMany(mappedBy = "vino", fetch = FetchType.EAGER)
     private List<Reseña> reseñas;
-
     @OneToMany(mappedBy = "vino", fetch = FetchType.EAGER)
     private List<Varietal> varietales;
 
+
+
     public Vino() {}
+
 
     public String toString(){
         return "Vino: ("+ id + ") " + nombre + ", Bodega:" + bodega.getNombre() + ", precioArs: " + precioArs;
