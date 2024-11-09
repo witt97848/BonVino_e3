@@ -79,7 +79,7 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
     }
 
 
-    // TODO TESTIINNGGG
+    // HECHO
     public void buscarVinosConReseñaSolicitada(){
         System.out.println("Vinos con reseñas premium en periodo: "+ fechaDesde + " - " + fechaHasta);
 
@@ -131,7 +131,17 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
     }
 
     public void generarArchivo(List<String> vinosFiltrados){
-        interfazExcel.exportarExcel(vinosFiltrados);
+
+
+        String textCSV = "Promedio Sommelier, ID, Nombre, Promedio Calificacion General, Bodega, Region, Pais, Precio, Varietales";
+
+        for (String vino : vinosFiltrados) {
+            textCSV += "\n" + vino;
+        }
+
+        System.out.println(textCSV);
+
+        interfazExcel.exportarExcel(textCSV);
     }
 
     public void finCU(){
@@ -139,9 +149,7 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         pantalla.cerrar();
     }
 
-    // Implementacion de los metodos de la interfaz IAgregado
-
-    // TODO Implementar el metodo crearIterador
+    // HECHO Implementacion de la interfaz IAgregado
     public IIterador crearIterador(List<Vino> elementos, List<LocalDate> periodo){
         return new IteradorVinos(vinos, periodo);
     }
