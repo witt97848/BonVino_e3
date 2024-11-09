@@ -15,15 +15,16 @@ import java.util.stream.Collectors;
 
 public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
 
-    public PantallaGenerarReporteDeRankingDeVinos pantalla;
-    public InterfazExcel interfazExcel;
+    private PantallaGenerarReporteDeRankingDeVinos pantalla;
+    private InterfazExcel interfazExcel;
     private LocalDate fechaDesde, fechaHasta;
     private List<LocalDate> periodo;
     private String seleccionTipoReseñas, seleccionFormatoVisualizacion, formatoVisualizacion;
     private VinoRepository vinoRepository;
     private List<String> top10RankingVinos;
-
     private List<Vino> vinos;
+
+
 
     public GestorDeGeneracionDeReporte(PantallaGenerarReporteDeRankingDeVinos pantalla){
         this.pantalla = pantalla;
@@ -39,7 +40,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         pantalla.solicitarFechaDesdeYFechaHasta();
     };
 
-
     public void tomarFechaDesdeYFechaHasta(LocalDate fechaDesde, LocalDate fechaHasta){
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
@@ -51,7 +51,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         pantalla.solicitarTipoDeReseña();
     };
 
-    // HECHO
     public void tomarTipoReseñaSeleccionada(String seleccionTipoReseñas){
         this.seleccionTipoReseñas = seleccionTipoReseñas;
 
@@ -60,7 +59,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
 
     };
 
-    // HECHO
     public void tomarSeleccionFormato(String seleccionFormatoVisualizacion){
         this.seleccionFormatoVisualizacion = seleccionFormatoVisualizacion;
         System.out.println("Formato de visualizacion seleccionado: " + seleccionFormatoVisualizacion);
@@ -68,7 +66,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         pantalla.solicitarConfirmacion();
     };
 
-    // HECHO
     public void tomarConfirmacion(String confirmacion){
         if(confirmacion.equals("SI")){
             // Paso numero 17 del DSecuecnia
@@ -78,8 +75,6 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         }
     }
 
-
-    // HECHO
     public void buscarVinosConReseñaSolicitada(){
         System.out.println("Vinos con reseñas premium en periodo: "+ fechaDesde + " - " + fechaHasta);
 
@@ -87,6 +82,13 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         Map<Float, String> rankingVinos = new HashMap<>();
         Float promedioReseñas;
         String dataVino;
+
+
+        // TODO - SOLO PARA TEST Y MOSTRAR AL PROFESOR --> Borrar en la version final
+        for (Vino vino : vinos) {
+            System.out.println(vino.testMostrarVinosYReseñas());
+        }
+
 
 
         IIterador iteradorVinos = crearIterador(vinos, periodo);
@@ -133,13 +135,11 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
     public void generarArchivo(List<String> vinosFiltrados){
 
 
-        String textCSV = "Promedio Sommelier, ID, Nombre, Promedio Calificacion General, Bodega, Region, Pais, Precio, Varietales";
+        String textCSV = "Promedio Sommelier, ID, Nombre, Promedio General, Bodega, Region, Pais, Precio, Varietales";
 
         for (String vino : vinosFiltrados) {
             textCSV += "\n" + vino;
         }
-
-        System.out.println(textCSV);
 
         interfazExcel.exportarExcel(textCSV);
     }

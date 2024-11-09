@@ -30,22 +30,17 @@ public class Vino implements IAgregado<Reseña, LocalDate> {
     @OneToMany(mappedBy = "vino", fetch = FetchType.EAGER)
     private List<Varietal> varietales;
 
-
-
     public Vino() {}
-
 
     public String toString(){
         return "Vino: ("+ id + ") " + nombre + ", Bodega:" + bodega.getNombre() + ", precioArs: " + precioArs;
     }
 
-
-    // TODO (BORRAR - SOLO TEST)
     public String getReseñasString(){
 
         String cadena = "";
         for (Reseña reseña : reseñas) {
-            cadena += "  " + (reseña.esPremium() ? "Premium" : "No Premium") + " - " + reseña.getPuntaje().toString() + " - " + reseña.getFecha() + "\n";
+            cadena += "  " + (reseña.esPremium() ? "PREMIUM" : "no pre ") + " - " + reseña.getPuntaje().toString() + " - " + reseña.getFecha() + "\n";
         }
         return cadena;
     }
@@ -56,6 +51,12 @@ public class Vino implements IAgregado<Reseña, LocalDate> {
             cadena += "  " + varietal.toString() + "\n";
         }
         return cadena;
+    }
+
+    // TODO solo para test y presentar en consola los datos para validar funcionamiento --> Borrar
+
+    public String testMostrarVinosYReseñas(){
+        return "Vino - (" + id + ") " + nombre + "\n" + getReseñasString();
     }
 
     public List<Reseña> getReseñas(){
