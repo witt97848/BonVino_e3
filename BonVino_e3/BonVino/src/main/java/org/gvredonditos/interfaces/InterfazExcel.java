@@ -13,34 +13,34 @@ public class InterfazExcel {
 
     }
 
-//    public void exportarExcel(String textCSV){
-//
-//        String archivoCSV = "src/main/resources/META-INF/ranking_vinos.csv";
-//
-//        File file = new File(archivoCSV);
-//
-//        // Crear el archivo CSV en la ubicación especificada
-//        try (FileWriter writer = new FileWriter(archivoCSV)) {
-//            // Escribir el texto completo en el archivo
-//            writer.write(textCSV);
-//            System.out.println("Archivo CSV exportado exitosamente en: " + archivoCSV);
-//
-//            // Intentar abrir el archivo automáticamente
-//            if (Desktop.isDesktopSupported()) {
-//                Desktop.getDesktop().open(file);
-//                System.out.println("Archivo CSV abierto automáticamente.");
-//            } else {
-//                System.out.println("Abrir automáticamente no es compatible en este sistema.");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println("Excel file exported successfully!");
-//    }
+    public void exportarExcel(String textCSV){
+
+        String archivoCSV = "src/main/resources/META-INF/ranking_vinos.csv";
+
+        File file = new File(archivoCSV);
+
+        // Crear el archivo CSV en la ubicación especificada
+        try (FileWriter writer = new FileWriter(archivoCSV)) {
+            // Escribir el texto completo en el archivo
+            writer.write(textCSV);
+            System.out.println("Archivo CSV exportado exitosamente en: " + archivoCSV);
+
+            // Intentar abrir el archivo automáticamente
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+                System.out.println("Archivo CSV abierto automáticamente.");
+            } else {
+                System.out.println("Abrir automáticamente no es compatible en este sistema.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Excel file exported successfully!");
+    }
 
     // VISUALIZACION MAS CLARA EN HTML
-    public void exportarExcel(String textCSV) {
+    public void pruebaEnHTML(String textCSV) {
         String archivoHTML = "src/main/resources/META-INF/ranking_vinos.html";
         File file = new File(archivoHTML);
 

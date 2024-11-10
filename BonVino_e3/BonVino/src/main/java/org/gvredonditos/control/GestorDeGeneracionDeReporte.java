@@ -142,6 +142,9 @@ public class GestorDeGeneracionDeReporte implements IAgregado<Vino, LocalDate> {
         }
 
         interfazExcel.exportarExcel(textCSV);
+
+        //TODO para probar
+        //interfazExcel.pruebaEnHTML(textCSV);
     }
 
     public void finCU(){
